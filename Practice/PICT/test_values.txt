@@ -1,0 +1,5 @@
+gender: m, f, u, ~null
+age: 18, 21, 65, ~null
+phone: iPhone, Android, ~null
+IF [gender] = "m" THEN [phone] = "Android";
+# IF [gender] in {"m", "f"} THEN [phone] = "Android";
