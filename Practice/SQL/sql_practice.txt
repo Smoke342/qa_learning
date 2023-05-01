@@ -1,0 +1,83 @@
+#
+#для решения проблемы с кодировкой в psql необходимо ввести команду \! chcp 1251
+#показать базы данных в psql \l
+#подключится к базе данных в psql \c <name_database>
+#показать описание таблицы в psql \d <name_table>
+#
+
+								ОПРЕДЕЛЕНИЕ СТРУКТУРЫ ДАННЫХ
+*типы данных https://metanit.com/sql/postgresql/2.3.php
+*атрибуты https://metanit.com/sql/postgresql/2.4.php
+*внешние ключи https://metanit.com/sql/postgresql/2.5.php
+*подробнее про изменение таблицы https://metanit.com/sql/postgresql/2.6.php
+
+- создание базы данных:
+	CREATE DATABASE <name_new_database>;
+
+- удаление базы данных:
+	DROP DATABASE <name_database>;
+
+- создание таблицы:
+	CREATE TABLE <name_table>
+		(
+		<name_column_1> <data_type_1> <attributes_1>, 
+		<name_column_2> <data_type_2> <attributes_2>,
+		ect.
+		);
+
+- удаление таблицы:
+	DROP TABLE <name_table>;
+
+- переименовать таблицу
+	ALTER TABLE <old_name_table>
+	RENAME TO <new_name_table>;
+
+- изменить ограничение таблицы:
+	ALTER TABLE <name_table>
+		{ADD <attributes>; |
+		 DROP <attributes>;}
+
+- добавить новый столбец в таблицу:
+	ALTER TABLE <name_table> 
+	ADD <name_column> <data_type> <attributes>;
+
+- удалить столбец из таблицы:
+	ALTER TABLE <name_table> 
+	DROP COLUMN <name_column>;
+
+- изменить ограничение столбца:
+	ALTER TABLE <name_table> 
+	ALTER COLUMN <name_column>
+		{TYPE <data_type>; |
+		 SET <attributes>; |
+		 DROP <attributes>;}
+
+- переименовать столбец:
+	ALTER TABLE <name_table>
+	RENAME COLUMN <old_name_column> TO <new_name_column>;
+
+
+								ОПЕРАЦИИ С ДАННЫМИ
+- добавление данных:
+	INSERT INTO <name_table> [(<name_column_1>, <name_column_2>, ect.)]
+	VALUES 
+	(<value_1>, <value_2>, ect.),
+	(<value_1>, <value_2>, ect.),
+	(ect.);
+	*если не указать, в какие столбцы вводить значения, то необходимо указать значения для всех столбцов
+
+- обновление данных:
+	UPDATE <name_table>
+	SET <name_column_1> = <value>,
+		<name_column_2> = <value>,
+		ect.
+	[WHERE <condition>];
+
+- удаление данных:
+	DELETE FROM <name_table>
+	[WHERE <condition>];
+	*если не указывать условие, то из таблицы удалятся все строки
+
+
+								ВЫВОД ДАННЫХ
+- 
