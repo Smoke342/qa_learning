@@ -1,15 +1,15 @@
 #
-#для решения проблемы с кодировкой в psql необходимо ввести команду \! chcp 1251
-#показать базы данных в psql \l
-#подключится к базе данных в psql \c <name_database>
-#показать описание таблицы в psql \d <name_table>
+#для решения проблемы с кодировкой в psql необходимо ввести команду → \! chcp 1251
+#показать базы данных в psql → \l
+#подключится к базе данных в psql → \c <name_database>
+#показать описание таблицы в psql → \d <name_table>
 #
 
-								ОПРЕДЕЛЕНИЕ СТРУКТУРЫ ДАННЫХ
-*типы данных https://metanit.com/sql/postgresql/2.3.php
-*атрибуты https://metanit.com/sql/postgresql/2.4.php
-*внешние ключи https://metanit.com/sql/postgresql/2.5.php
-*подробнее про изменение таблицы https://metanit.com/sql/postgresql/2.6.php
+								§ОПРЕДЕЛЕНИЕ СТРУКТУРЫ ДАННЫХ
+*типы данных → https://metanit.com/sql/postgresql/2.3.php
+*атрибуты → https://metanit.com/sql/postgresql/2.4.php
+*внешние ключи → https://metanit.com/sql/postgresql/2.5.php
+*подробнее про изменение таблицы → https://metanit.com/sql/postgresql/2.6.php
 
 - создание базы данных:
 	CREATE DATABASE <name_new_database>;
@@ -57,7 +57,7 @@
 	RENAME COLUMN <old_name_column> TO <new_name_column>;
 
 
-								ОПЕРАЦИИ С ДАННЫМИ
+								§ОПЕРАЦИИ С ДАННЫМИ
 - добавление данных:
 	INSERT INTO <name_table> [(<name_column_1>, <name_column_2>, ect.)]
 	VALUES 
@@ -79,5 +79,75 @@
 	*если не указывать условие, то из таблицы удалятся все строки
 
 
-								ВЫВОД ДАННЫХ
+								§ВЫВОД ДАННЫХ
+- вывод данных без фильтрации:
+	SELECT <name_column_1>, <name_column_2>, ect.
+	FROM <name_table>;
+		*для вывода всех столбцов нужно ввести символ → *
+		*спецификацией столбца может быть любое выражение (например, результат арифметической операции → <name_column_1> * <name_column_2>)
+		*изменить название выходного столбца → SELECT <name_column> AS <name_alias>
+
+- вывод данных с фильтрацией:
+	SELECT <name_column_1>, <name_column_2>, ect.
+	FROM <name_table>
+	WHERE <condition>;
+
+		*condition:
+		WHERE <name_column> = <value>;
+			*спецификацией столбца может быть любое выражение
+			*операции сравнения (=, <>, <, >, <=, >=, !< (не меньше чем), !> (не больше чем))
+			*текстовые значения нужно указывать в одинарных кавычках ('value')
+			*логические операторы: AND, OR, NOT (NOT ставится перед <name_column>)
+			*вывод строчек с отсутствием какого-либо значения → WHERE <name_column> IS NULL (также можно указать IS NOT NULL)
+
+		*операторы фильтрации:
+			- определить набор значений, которые должны иметь столбцы:
+			WHERE <name_column> [NOT] IN (<value_1>, <value_2>, ect.);
+			*спецификацией столбца может быть любое выражение
+
+			- определить диапазон значений с помощью начального и конечного значения:
+			WHERE <name_column> [NOT] BETWEEN <initial_value> AND <final_value>;
+			*спецификацией столбца может быть любое выражение
+
+			- определить шаблон строки:
+			WHERE <name_column> [NOT] LIKE <template>;
+				*template:
+				→ % соответствует любой подстроке, которая может иметь любое количество символов (WHERE <name_column> LIKE 'Galaxy%' может соответствовать таким значениям как "Galaxy Ace 2" или "Galaxy S7" и т.д.)
+				→ _ соответствует любому одиночному символу (WHERE <name_column> LIKE 'Galaxy S_' может соответствовать таким значениям как "Galaxy S7" или "Galaxy S8" и т.д.)
+				*если применять шаблон для данных числового типа, то нужно привести данные к текстовому типу → WHERE <name_column>::TEXT [NOT] LIKE <template>
+
+- вывести данные без дубликатов:
+	SELECT DISTINCT <name_column>
+	FROM <name_table>;
+
+- отсортировать значения по определенному столбцу:
+	SELECT <name_column_1>, <name_column_2>, ect.
+	FROM <name_table>
+	ORDER BY <name_column_1>, <name_column_2>, ect;
+		*спецификацией столбца может быть любое выражение
+		*по умолчанию данные сортируются по возрастанию (также можно задать сортировку по убыванию → ORDER BY <name_column> DESC (по возрастанию → ASC))
+		*в случае сортировки по двум и более столбцам, строки начнут сортироваться сначало по первому указанному столбцу, затем по последующимим
+
+- получение определенного количества строк:
+	SELECT <name_column_1>, <name_column_2>, ect.
+	FROM <name_table>
+	LIMIT <number_of_terms>;
+
+- агрегатные функции:
+	SELECT <aggregate_function_1>, <aggregate_function_2>, ect.
+	FROM <name_table>;
+	*спецификацией столбца может быть любое выражение
+	
+		*aggregate_function:
+		- вывод среднего значения → AVG(<name_column>)
+		- вывод количества строк → COUNT(<name_column> or *)
+		- вывод максимального значения → MAX(<name_column>)
+		- вывод минимального значения → MIN(<name_column>)
+		- вывод суммы значений → SUM(<name_column>)
+		- объединение значений в одну строку → STRING_AGG([DISTINCT] <name_column>, ', ')
+		- выполнить операцию логического умножения для значений типа bool → BOOL_AND(<name_column>)
+			*если все значения равны true, то возвращается true, иначе возвращается false
+		- выполняет операцию логического сложения для значений типа bool → BOOL_OR(<name_column>)
+			*если хотя бы одно из значений равно true, то возвращается true, иначе возвращается false
+			
 - 
