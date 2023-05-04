@@ -28,14 +28,14 @@
 - удаление таблицы:
 	DROP TABLE <name_table>;
 
-- переименовать таблицу
-	ALTER TABLE <old_name_table>
-	RENAME TO <new_name_table>;
-
 - изменить ограничение таблицы:
 	ALTER TABLE <name_table>
 		{ADD <attributes>; |
 		 DROP <attributes>;}
+
+- переименовать таблицу
+	ALTER TABLE <old_name_table>
+	RENAME TO <new_name_table>;
 
 - добавить новый столбец в таблицу:
 	ALTER TABLE <name_table> 
@@ -87,6 +87,25 @@
 		*спецификацией столбца может быть любое выражение (например, результат арифметической операции → <name_column_1> * <name_column_2>)
 		*изменить название выходного столбца → SELECT <name_column> AS <name_alias>
 
+- вывести данные без дубликатов:
+	SELECT DISTINCT <name_column>
+	FROM <name_table>;
+
+- отсортировать значения по определенному столбцу:
+	SELECT <name_column_1>, <name_column_2>, ect.
+	FROM <name_table>
+	[WHERE <condition>]
+	ORDER BY <name_column_1>, <name_column_2>, ect;
+		*по умолчанию данные сортируются по возрастанию (также можно задать сортировку по убыванию → ORDER BY <name_column> DESC (по возрастанию → ASC))
+		*в случае сортировки по двум и более столбцам, строки начнут сортироваться сначало по первому указанному столбцу, затем по последующимим
+
+- получение определенного количества строк:
+	SELECT <name_column_1>, <name_column_2>, ect.
+	FROM <name_table>
+	[WHERE <condition>]
+	[ORDER BY <name_column_1>, <name_column_2>, ect]
+	LIMIT <number_of_terms>;
+
 - вывод данных с фильтрацией:
 	SELECT <name_column_1>, <name_column_2>, ect.
 	FROM <name_table>
@@ -103,11 +122,9 @@
 		*операторы фильтрации:
 			- определить набор значений, которые должны иметь столбцы:
 			WHERE <name_column> [NOT] IN (<value_1>, <value_2>, ect.);
-			*спецификацией столбца может быть любое выражение
 
 			- определить диапазон значений с помощью начального и конечного значения:
 			WHERE <name_column> [NOT] BETWEEN <initial_value> AND <final_value>;
-			*спецификацией столбца может быть любое выражение
 
 			- определить шаблон строки:
 			WHERE <name_column> [NOT] LIKE <template>;
@@ -115,23 +132,6 @@
 				→ % соответствует любой подстроке, которая может иметь любое количество символов (WHERE <name_column> LIKE 'Galaxy%' может соответствовать таким значениям как "Galaxy Ace 2" или "Galaxy S7" и т.д.)
 				→ _ соответствует любому одиночному символу (WHERE <name_column> LIKE 'Galaxy S_' может соответствовать таким значениям как "Galaxy S7" или "Galaxy S8" и т.д.)
 				*если применять шаблон для данных числового типа, то нужно привести данные к текстовому типу → WHERE <name_column>::TEXT [NOT] LIKE <template>
-
-- вывести данные без дубликатов:
-	SELECT DISTINCT <name_column>
-	FROM <name_table>;
-
-- отсортировать значения по определенному столбцу:
-	SELECT <name_column_1>, <name_column_2>, ect.
-	FROM <name_table>
-	ORDER BY <name_column_1>, <name_column_2>, ect;
-		*спецификацией столбца может быть любое выражение
-		*по умолчанию данные сортируются по возрастанию (также можно задать сортировку по убыванию → ORDER BY <name_column> DESC (по возрастанию → ASC))
-		*в случае сортировки по двум и более столбцам, строки начнут сортироваться сначало по первому указанному столбцу, затем по последующимим
-
-- получение определенного количества строк:
-	SELECT <name_column_1>, <name_column_2>, ect.
-	FROM <name_table>
-	LIMIT <number_of_terms>;
 
 - агрегатные функции:
 	SELECT <aggregate_function_1>, <aggregate_function_2>, ect.
@@ -156,10 +156,14 @@
 	FROM <name_table>
 	[WHERE <condition>]
 	GROUP BY <name_column_1>, <name_column_2>, ect.
-	HAVING <condition>
+	[HAVING <condition>]
 	[ORDER BY <name_column_1>, <name_column_2>, ect];
 		*любой столбец, который используется в выражении SELECT (не считая столбцов, которые хранят результат агрегатных функций), должны быть указаны после оператора GROUP BY
-		*использование оператора HAVING аналогично применению оператора WHERE
+		*использование оператора HAVING аналогично применению оператора WHERE (используется для фильтрации сгруппированных результатов)
 		*оператор GROUP BY поддерживает несколько специальных расширений → https://metanit.com/sql/postgresql/4.6.php
 
+- подзапросы → https://metanit.com/sql/postgresql/4.7.php
+
+
+								§СОЕДИНЕНИЕ ТАБЛИЦ
 - 
