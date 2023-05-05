@@ -1,8 +1,8 @@
 #
 #для решения проблемы с кодировкой в psql необходимо ввести команду → \! chcp 1251
 #показать базы данных в psql → \l
-#подключится к базе данных в psql → \c <name_database>
-#показать описание таблицы в psql → \d <name_table>
+#подключится к базе данных в psql → \c <database>
+#показать описание таблицы в psql → \d <table>
 #
 
 								§ОПРЕДЕЛЕНИЕ СТРУКТУРЫ ДАННЫХ
@@ -12,24 +12,23 @@
 *подробнее про изменение таблицы → https://metanit.com/sql/postgresql/2.6.php
 
 - создание базы данных:
-	CREATE DATABASE <name_new_database>;
+	CREATE DATABASE <database>;
 
 - удаление базы данных:
-	DROP DATABASE <name_database>;
+	DROP DATABASE <database>;
 
 - создание таблицы:
-	CREATE TABLE <name_table>
+	CREATE TABLE <table>
 		(
-		<name_column_1> <data_type_1> <attributes_1>, 
-		<name_column_2> <data_type_2> <attributes_2>,
-		ect.
+		<column_1> <data_type_1> <attributes_1>, 
+		<column_∞> <data_type_∞> <attributes_∞>
 		);
 
 - удаление таблицы:
-	DROP TABLE <name_table>;
+	DROP TABLE <table>;
 
 - изменить ограничение таблицы:
-	ALTER TABLE <name_table>
+	ALTER TABLE <table>
 		{ADD <attributes>; |
 		 DROP <attributes>;}
 
@@ -38,126 +37,127 @@
 	RENAME TO <new_name_table>;
 
 - добавить новый столбец в таблицу:
-	ALTER TABLE <name_table> 
-	ADD <name_column> <data_type> <attributes>;
+	ALTER TABLE <table> 
+	ADD <column> <data_type> <attributes>;
 
 - удалить столбец из таблицы:
-	ALTER TABLE <name_table> 
-	DROP COLUMN <name_column>;
+	ALTER TABLE <table> 
+	DROP COLUMN <column>;
 
 - изменить ограничение столбца:
-	ALTER TABLE <name_table> 
-	ALTER COLUMN <name_column>
+	ALTER TABLE <table> 
+	ALTER COLUMN <column>
 		{TYPE <data_type>; |
 		 SET <attributes>; |
 		 DROP <attributes>;}
 
 - переименовать столбец:
-	ALTER TABLE <name_table>
+	ALTER TABLE <table>
 	RENAME COLUMN <old_name_column> TO <new_name_column>;
 
 
 								§ОПЕРАЦИИ С ДАННЫМИ
 - добавление данных:
-	INSERT INTO <name_table> [(<name_column_1>, <name_column_2>, ect.)]
+	INSERT INTO <table> [(<column_1>, <column_∞>)]
 	VALUES 
-	(<value_1>, <value_2>, ect.),
-	(<value_1>, <value_2>, ect.),
-	(ect.);
+	(<value_1>, <value_∞>),
+	(<value_1>, <value_∞>),
+	ect.;
 	*если не указать, в какие столбцы вводить значения, то необходимо указать значения для всех столбцов
 
 - обновление данных:
-	UPDATE <name_table>
-	SET <name_column_1> = <value>,
-		<name_column_2> = <value>,
-		ect.
+	UPDATE <table>
+	SET <column_1> = <value>,
+		<column_∞> = <value>
 	[WHERE <condition>];
 
 - удаление данных:
-	DELETE FROM <name_table>
+	DELETE FROM <table>
 	[WHERE <condition>];
 	*если не указывать условие, то из таблицы удалятся все строки
 
 
 								§ВЫВОД ДАННЫХ
 - вывод данных без фильтрации:
-	SELECT <name_column_1>, <name_column_2>, ect.
-	FROM <name_table>;
+	SELECT <column_1>, <column_∞>, ect.
+	FROM <table>;
 		*для вывода всех столбцов нужно ввести символ → *
-		*спецификацией столбца может быть любое выражение (например, результат арифметической операции → <name_column_1> * <name_column_2>)
-		*изменить название выходного столбца → SELECT <name_column> AS <name_alias>
+		*спецификацией столбца может быть любое выражение (например, результат арифметической операции → <column_1> * <column_2>)
+		*изменить название выходного столбца → SELECT <column> AS <alias>
+		*объединение нескольких столбцов в один → SELECT <column_1> || ' ' || <column_2> || ' ' || <column_3> || ' ' || ect.
+			* || ' ' || → определяет разделитель между значениями (в данном случае разделитель определен как один пробел)
 
 - вывести данные без дубликатов:
-	SELECT DISTINCT <name_column>
-	FROM <name_table>;
+	SELECT DISTINCT <column>
+	FROM <table>;
 
-- отсортировать значения по определенному столбцу:
-	SELECT <name_column_1>, <name_column_2>, ect.
-	FROM <name_table>
+- отсортировать строки:
+	SELECT <select_list>
+	FROM <table>
 	[WHERE <condition>]
-	ORDER BY <name_column_1>, <name_column_2>, ect;
-		*по умолчанию данные сортируются по возрастанию (также можно задать сортировку по убыванию → ORDER BY <name_column> DESC (по возрастанию → ASC))
-		*в случае сортировки по двум и более столбцам, строки начнут сортироваться сначало по первому указанному столбцу, затем по последующимим
+	ORDER BY <column_1>, <column_∞>;
+		*по умолчанию данные сортируются по возрастанию (также можно задать сортировку по убыванию → ORDER BY <column> DESC (по возрастанию → ASC))
+		*в случае сортировки по двум и более столбцам, строки начнут сортироваться сначало по первому указанному столбцу, затем по последующим
 
 - получение определенного количества строк:
-	SELECT <name_column_1>, <name_column_2>, ect.
-	FROM <name_table>
+	SELECT <select_list>
+	FROM <table>
 	[WHERE <condition>]
-	[ORDER BY <name_column_1>, <name_column_2>, ect]
+	[ORDER BY <order_by_list>]
 	LIMIT <number_of_terms>;
 
 - вывод данных с фильтрацией:
-	SELECT <name_column_1>, <name_column_2>, ect.
-	FROM <name_table>
+	SELECT <select_list>
+	FROM <table>
 	WHERE <condition>;
 
 		*condition:
-		WHERE <name_column> = <value>;
+		WHERE <column> = <value>;
 			*спецификацией столбца может быть любое выражение
 			*операции сравнения (=, <>, <, >, <=, >=, !< (не меньше чем), !> (не больше чем))
 			*текстовые значения нужно указывать в одинарных кавычках ('value')
-			*логические операторы: AND, OR, NOT (NOT ставится перед <name_column>)
-			*вывод строчек с отсутствием какого-либо значения → WHERE <name_column> IS NULL (также можно указать IS NOT NULL)
+			*логические операторы: AND, OR, NOT (NOT ставится перед столбцом или выражением)
+			*вывод строчек с отсутствием какого-либо значения → WHERE <column> IS NULL (также можно указать IS NOT NULL)
 
 		*операторы фильтрации:
 			- определить набор значений, которые должны иметь столбцы:
-			WHERE <name_column> [NOT] IN (<value_1>, <value_2>, ect.);
+			WHERE <name_column> [NOT] IN (<value_1>, <value_∞>);
 
 			- определить диапазон значений с помощью начального и конечного значения:
 			WHERE <name_column> [NOT] BETWEEN <initial_value> AND <final_value>;
 
 			- определить шаблон строки:
-			WHERE <name_column> [NOT] LIKE <template>;
+			WHERE <column> [NOT] LIKE <template>;
 				*template:
-				→ % соответствует любой подстроке, которая может иметь любое количество символов (WHERE <name_column> LIKE 'Galaxy%' может соответствовать таким значениям как "Galaxy Ace 2" или "Galaxy S7" и т.д.)
-				→ _ соответствует любому одиночному символу (WHERE <name_column> LIKE 'Galaxy S_' может соответствовать таким значениям как "Galaxy S7" или "Galaxy S8" и т.д.)
+				→ % соответствует любой подстроке, которая может иметь любое количество символов (WHERE <column> LIKE 'Galaxy%' может соответствовать таким значениям как "Galaxy Ace 2" или "Galaxy S7" и т.д.)
+				→ _ соответствует любому одиночному символу (WHERE <column> LIKE 'Galaxy S_' может соответствовать таким значениям как "Galaxy S7" или "Galaxy S8" и т.д.)
 				*если применять шаблон для данных числового типа, то нужно привести данные к текстовому типу → WHERE <name_column>::TEXT [NOT] LIKE <template>
 
 - агрегатные функции:
-	SELECT <aggregate_function_1>, <aggregate_function_2>, ect.
-	FROM <name_table>;
+	SELECT <aggregate_function_1>, <aggregate_function_∞>, ect.
+	FROM <table>;
 	*спецификацией столбца может быть любое выражение
 	*если в выражении SELECT производится выборка по одному или нескольким столбцам и также используются агрегатные функции, то необходимо использовать выражение GROUP BY
 	
 		*aggregate_function:
-		- вывод среднего значения → AVG(<name_column>)
-		- вывод количества строк → COUNT(<name_column> or *)
-		- вывод максимального значения → MAX(<name_column>)
-		- вывод минимального значения → MIN(<name_column>)
-		- вывод суммы значений → SUM(<name_column>)
-		- объединение значений в одну строку → STRING_AGG([DISTINCT] <name_column>, ', ')
-		- выполнить операцию логического умножения для значений типа bool → BOOL_AND(<name_column>)
+		- вывод среднего значения → AVG(<column>)
+		- вывод количества строк → COUNT(<column> or *)
+		- вывод максимального значения → MAX(<column>)
+		- вывод минимального значения → MIN(<column>)
+		- вывод суммы значений → SUM(<column>)
+		- объединение значений в одну строку → STRING_AGG([DISTINCT] <column>, ', ')
+		- выполнить операцию логического умножения для значений типа bool → BOOL_AND(<column>)
 			*если все значения равны true, то возвращается true, иначе возвращается false
-		- выполняет операцию логического сложения для значений типа bool → BOOL_OR(<name_column>)
+		- выполняет операцию логического сложения для значений типа bool → BOOL_OR(<column>)
 			*если хотя бы одно из значений равно true, то возвращается true, иначе возвращается false
 
 - группировка результатов при выборке и ее фильтрация:
-	SELECT <name_column_1>, <name_column_2>, ect., <aggregate_function_1>, <aggregate_function_2>, ect.
-	FROM <name_table>
+	SELECT <column_1>, <column_∞>, <aggregate_function_1>, <aggregate_function_∞>
+	FROM <table>
 	[WHERE <condition>]
-	GROUP BY <name_column_1>, <name_column_2>, ect.
+	GROUP BY <column_1>, <column_∞>
 	[HAVING <condition>]
-	[ORDER BY <name_column_1>, <name_column_2>, ect];
+	[ORDER BY <order_by_list>];
 		*любой столбец, который используется в выражении SELECT (не считая столбцов, которые хранят результат агрегатных функций), должны быть указаны после оператора GROUP BY
 		*использование оператора HAVING аналогично применению оператора WHERE (используется для фильтрации сгруппированных результатов)
 		*оператор GROUP BY поддерживает несколько специальных расширений → https://metanit.com/sql/postgresql/4.6.php
@@ -166,4 +166,66 @@
 
 
 								§СОЕДИНЕНИЕ ТАБЛИЦ
-- 
+- неявное соединение таблиц:
+	SELECT <table.column_1>, <table.column_∞>
+	FROM <table_1>, <table_∞>
+	WHERE <condition>;
+		*если соединяются три и более таблицы, то должны применятся два и более условия
+		*для сокращения кода можно использовать псевдонимы (AS)
+		*для вывода всех столбцов таблицы нужно заменить column на знак → * (<table.*>)
+
+- INNER JOIN:
+	SELECT <select_list>
+	FROM <table_1>
+	JOIN <table_2> ON <condition>
+	[[OUTER]JOIN <table_3> ON <condition>
+	[WHERE <condition>]
+	ect.];
+
+- OUTER JOIN:
+	SELECT <select_list>
+	FROM <table_1>
+	{LEFT | RIGHT | FULL} JOIN <table_2> ON <condition>
+	[[OUTER] JOIN <table_3> ON <condition>
+	[WHERE <condition>]
+	ect.];
+		*LEFT → выборка будет содержать все строки из первой или левой таблицы
+		*RIGHT → выборка будет содержать все строки из второй или правой таблицы
+		*FULL → выборка будет содержать все строки из обеих таблиц
+		*если нужно вывести строки только из одной таблицы (без совпавших по условию строк с другой таблицы), то нужно ввести условие → WHERE <key> IS NULL
+		*если не нужно выводить совпавшие строки при FULL JOIN, то нужно ввести условие → WHERE <key_1> IS NULL OR <key_2> IS NULL OR ect.
+
+*{UNION | EXCEPT | INTERSECT}:
+	*выводятся только уникальные значения выборки
+	*если необходимо вывести повторяющиеся строки, то для этого необходимо использовать оператор → {UNION | EXCEPT | INTERSECT} ALL
+	*при сортировке необходимо ориентироваться на названия столбцов первой выборки
+- UNION:
+	SELECT <select_list>
+	FROM <table>
+	UNION SELECT <select_list> FROM <table>
+	[WHERE <condition>]
+	[UNION SELECT <select_list> FROM <table>
+	[WHERE <condition>]
+	ect.]
+	[ORDER BY <order_by_list>];
+		*объединять выборки можно из разных таблиц или из одной
+
+- EXCEPT:
+	SELECT <select_list>
+	FROM <table_1>
+	[WHERE <condition>]
+	EXCEPT SELECT <select_list> FROM <table_2>
+	[EXCEPT SELECT <select_list> FROM <table_3>
+	ect.]
+	[ORDER BY <order_by_list>];
+
+- INTERSECT:
+	SELECT <select_list>
+	FROM <table_1>
+	[WHERE <condition>]
+	INTERSECT SELECT <select_list> FROM <table_2>
+	[WHERE <condition>]
+	[INTERSECT SELECT <select_list> FROM <table_3>
+	[WHERE <condition>]
+	ect.]
+	[ORDER BY <order_by_list>];
