@@ -229,3 +229,9 @@
 	[WHERE <condition>]
 	ect.]
 	[ORDER BY <order_by_list>];
+
+
+								§ФУНКЦИИ
+- LENGTH (определяет число символов в строке)
+	LENGTH(<column>)[<comparison_operator><value>]
+		*можно использовать в select_list и condition
