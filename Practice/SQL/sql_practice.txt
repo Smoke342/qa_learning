@@ -206,6 +206,7 @@
 - UNION:
 	SELECT <select_list>
 	FROM <table>
+	[WHERE <condition>]
 	UNION SELECT <select_list> FROM <table>
 	[WHERE <condition>]
 	[UNION SELECT <select_list> FROM <table>
